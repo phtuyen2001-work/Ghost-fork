@@ -114,6 +114,10 @@ module.exports = function apiRoutes() {
     router.put('/tags/:id', mw.authAdminApi, http(api.tags.edit));
     router.del('/tags/:id', mw.authAdminApi, http(api.tags.destroy));
 
+    // Infras
+    router.get('/infras', mw.authAdminApi, http(api.infras.browse));
+    router.get('/infras/:id', mw.authAdminApi, http(api.infras.read));
+
     // Tiers
     router.get('/tiers', mw.authAdminApi, http(api.tiers.browse));
     router.post('/tiers', mw.authAdminApi, http(api.tiers.add));

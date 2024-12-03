@@ -57,6 +57,10 @@ module.exports = {
         return apiFramework.pipeline(require('./webhooks'), localUtils);
     },
 
+    get infras() {
+        return apiFramework.pipeline(require('./infras'), localUtils);
+    },
+
     get posts() {
         return apiFramework.pipeline(require('./posts'), localUtils);
     },
