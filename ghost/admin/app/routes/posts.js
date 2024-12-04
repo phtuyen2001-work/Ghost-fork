@@ -106,6 +106,12 @@ export default class PostsRoute extends AuthenticatedRoute {
             });
         }
 
+        if (!controller._hasLoadedInfras) {
+            this.store.query('infra', {limit: 'all'}).then(() => {
+                controller._hasLoadedInfras = true;
+            });
+        }
+
         if (controller.selectionList) {
             if (this.session.user.isAuthorOrContributor) {
                 controller.selectionList.enabled = false;

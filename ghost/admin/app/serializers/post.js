@@ -7,6 +7,7 @@ export default class PostSerializer extends ApplicationSerializer.extend(Embedde
     attrs = {
         authors: {embedded: 'always'},
         tags: {embedded: 'always'},
+        infras: {embedded: 'always'},
         publishedAtUTC: {key: 'published_at'},
         createdAtUTC: {key: 'created_at'},
         updatedAtUTC: {key: 'updated_at'},

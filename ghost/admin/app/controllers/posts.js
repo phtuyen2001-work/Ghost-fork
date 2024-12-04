@@ -75,9 +75,11 @@ export default class PostsController extends Controller {
 
     _availableTags = this.store.peekAll('tag');
     _availableAuthors = this.store.peekAll('user');
+    _availableInfras = this.store.peekAll('infra');
 
     _hasLoadedTags = false;
     _hasLoadedAuthors = false;
+    _hasLoadedInfras = false;
 
     constructor() {
         super(...arguments);
@@ -137,6 +139,12 @@ export default class PostsController extends Controller {
         return authors.findBy('slug', author) || {slug: '!unknown'};
     }
 
+    // get availableInfras() {
+    //     const infras = this._availableInfras;
+    //     console.log(infras);
+    //     return infras;
+    // }
+
     @action
     changeType(type) {
         this.type = type.value;
@@ -156,6 +164,11 @@ export default class PostsController extends Controller {
     changeTag(tag) {
         this.tag = tag.slug;
     }
+
+    // @action
+    // changeInfra(infra) {
+    //     console.log(infra);
+    // }
 
     @action
     changeOrder(order) {

@@ -128,6 +128,7 @@ export default Model.extend(Comparable, ValidationEngine, {
     newsletter: belongsTo('newsletter', {embedded: 'always', async: false}),
     publishedBy: belongsTo('user', {async: true}),
     tags: hasMany('tag', {embedded: 'always', async: false}),
+    infras: hasMany('infra', {embedded: 'always', async: false}),
     postRevisions: hasMany('post_revisions', {embedded: 'always', async: false}),
 
     primaryAuthor: reads('authors.firstObject'),

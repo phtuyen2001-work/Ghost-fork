@@ -3,6 +3,7 @@
 import CollectionValidator from 'ghost-admin/validators/collection';
 import CustomViewValidator from 'ghost-admin/validators/custom-view';
 import DS from 'ember-data'; // eslint-disable-line
+import InfraValidator from 'ghost-admin/validators/infra';
 import IntegrationValidator from 'ghost-admin/validators/integration';
 import InviteUserValidator from 'ghost-admin/validators/invite-user';
 import LabelValidator from 'ghost-admin/validators/label';
@@ -68,6 +69,7 @@ export default Mixin.create({
             signin: SigninValidator,
             signup: SignupValidator,
             tag: TagSettingsValidator,
+            infra: InfraValidator,
             collection: CollectionValidator,
             user: UserValidator,
             member: MemberValidator,
