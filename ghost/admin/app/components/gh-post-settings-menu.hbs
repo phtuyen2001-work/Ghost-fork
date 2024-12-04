@@ -74,6 +74,11 @@
                         </div>
                         {{/unless}}
 
+                        <div class="form-group">
+                            <label for="infra-input">Infras</label>
+                            <GhPsmInfrasSelect @post={{this.post}} @savePostOnChange={{action "savePost"}} @triggerId="tag-infra"/>
+                        </div>
+
                         {{#if this.showVisibilityInput}}
                             <GhFormGroup @errors={{this.post.errors}} @hasValidated={{this.post.hasValidated}} @property="visibility">
                                 <label for="visibility-input">{{capitalize @post.displayName}} access</label>

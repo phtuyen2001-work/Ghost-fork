@@ -1,0 +1,11 @@
+<GhTokenInput
+    @extra={{hash
+        tokenComponent=(component "gh-token-input/tag-token")
+    }}
+    @options={{this.availableInfras}}
+    @selected={{this.post.infras}}
+    @onChange={{action 'updateInfras'}}
+    @allowCreation={{false}}
+    @renderInPlace={{true}}
+    @triggerId={{this.triggerId}}
+/>
