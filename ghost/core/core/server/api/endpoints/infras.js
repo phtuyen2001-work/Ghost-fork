@@ -1,5 +1,3 @@
-const tpl = require('@tryghost/tpl');
-const errors = require('@tryghost/errors');
 const models = require('../../models');
 
 /** @type {import('@tryghost/api-framework').Controller} */
@@ -10,7 +8,7 @@ const controller = {
         headers: {
             cacheInvalidate: false
         },
-        validation: { },
+        // why false works?
         permissions: false,
         query(frame) {
             return models.Infra.findPage(frame.options);
@@ -27,22 +25,16 @@ const controller = {
         //     'fields',
         //     'debug'
         // ],
-        data: [
-            'id',
-            'slug',
-            'name'
-        ],
-        validation: {},
+        // data: [
+        //     'id',
+        //     'slug',
+        //     'name'
+        // ],
+        // why false works?
         permissions: false,
         query(frame) {
             return models.Infra.findOne(frame.data, frame.options)
                 .then((model) => {
-                    // if (!model) {
-                    //     return Promise.reject(new errors.NotFoundError({
-                    //         message: tpl('Infra not found.')
-                    //     }));
-                    // }
-
                     return model;
                 });
         }

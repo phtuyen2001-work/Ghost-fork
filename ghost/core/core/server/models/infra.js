@@ -10,6 +10,10 @@ Infra = ghostBookshelf.Model.extend({
     actionsCollectCRUD: true,
     actionsResourceType: 'infra',
 
+    posts: function posts() {
+        return this.belongsToMany('Post');
+    },
+
     format(options) {
         const attrs = ghostBookshelf.Model.prototype.format.call(this, options);
 
@@ -22,18 +26,42 @@ Infra = ghostBookshelf.Model.extend({
         return attrs;
     },
 
+    toJSON: function toJSON(unfilteredOptions) {
+        const options = Infra.filterOptions(unfilteredOptions, 'toJSON');
+        const attrs = ghostBookshelf.Model.prototype.toJSON.call(this, options);
+
+        return attrs;
+    },
+
+    defaultColumnsToFetch() {
+        return ['id'];
+    }
+}, {
+
+    // countRelations() {
+    //     return {
+    //         posts(modelOrCollection, options) {
+    //             console.log('countRelations in infra')
+    //             modelOrCollection.query('columns', 'infras.*', (qb) => {
+    //                 qb.count('posts.id')
+    //                     .from('posts')
+    //                     .join('posts_infras', 'posts.id', 'posts_infras.post_id')
+    //                     .whereRaw('posts_infras.infra_id = infras.id')
+    //                     .as('count__posts');
+    //                 // if (options.context && options.context.public) {
+    //                 //     // @TODO use the filter behavior for posts
+    //                 //     qb.andWhere('posts.type', '=', 'post');
+    //                 //     qb.andWhere('posts.status', '=', 'published');
+    //                 // }
+    //             });
+    //         }
+    //     };
+    // },
 });
 
 Infras = ghostBookshelf.Collection.extend({
     model: Infra
 });
-
-// console.log('BEEPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP')
-// new Infras({id: '00001'}).fetch().then((infra) => {
-//     console.log(infra);
-// }).catch((error) => {
-//     console.error(error);
-// });
 
 module.exports = {
     Infra: ghostBookshelf.model('Infra', Infra),

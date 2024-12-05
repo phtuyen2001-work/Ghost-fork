@@ -32,6 +32,7 @@ const notImplemented = function notImplemented(req, res, next) {
         webhooks: ['POST', 'PUT', 'DELETE'],
         actions: ['GET'],
         tags: ['GET', 'PUT', 'DELETE', 'POST'],
+        infras: ['GET'],
         labels: ['GET', 'PUT', 'DELETE', 'POST'],
         users: ['GET'],
         roles: ['GET'],

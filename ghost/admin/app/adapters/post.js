@@ -3,6 +3,7 @@ import ApplicationAdapter from 'ghost-admin/adapters/application';
 export const ALL_POST_INCLUDES = [
     'tags',
     'authors',
+    'infras',
     'authors.roles',
     'email',
     'tiers',

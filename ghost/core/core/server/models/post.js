@@ -100,7 +100,7 @@ Post = ghostBookshelf.Model.extend({
         };
     },
 
-    relationships: ['tags', 'authors', 'mobiledoc_revisions', 'post_revisions', 'posts_meta', 'tiers'],
+    relationships: ['tags', 'authors', 'mobiledoc_revisions', 'post_revisions', 'posts_meta', 'tiers', 'infras'],
     relationshipConfig: {
         tags: {
             editable: true
@@ -123,6 +123,7 @@ Post = ghostBookshelf.Model.extend({
     relationshipBelongsTo: {
         tags: 'tags',
         tiers: 'products',
+        infras: 'infras',
         authors: 'users',
         posts_meta: 'posts_meta'
     },
@@ -340,6 +341,13 @@ Post = ghostBookshelf.Model.extend({
                 joinTable: 'posts_authors',
                 joinFrom: 'post_id',
                 joinTo: 'author_id'
+            },
+            infras: {
+                tableName: 'infras',
+                type: 'manyToMany',
+                joinTable: 'posts_infras',
+                joinFrom: 'post_id',
+                joinTo: 'infra_id'
             },
             posts_meta: {
                 tableName: 'posts_meta',
@@ -1053,6 +1061,12 @@ Post = ghostBookshelf.Model.extend({
             .query('orderBy', 'sort_order', 'ASC');
     },
 
+    infras: function infras() {
+        return this.belongsToMany('Infra', 'posts_infras', 'post_id', 'infra_id')
+            .withPivot('sort_order')
+            .query('orderBy', 'sort_order', 'ASC');
+    },
+
     mobiledoc_revisions() {
         return this.hasMany('MobiledocRevision', 'post_id');
     },
@@ -1287,7 +1301,7 @@ Post = ghostBookshelf.Model.extend({
      */
     defaultRelations: function defaultRelations(methodName, options) {
         if (['edit', 'add', 'destroy'].indexOf(methodName) !== -1) {
-            options.withRelated = _.union(['authors', 'tags', 'post_revisions', 'post_revisions.author'], options.withRelated || []);
+            options.withRelated = _.union(['authors', 'tags', 'infras', 'post_revisions', 'post_revisions.author'], options.withRelated || []);
         }
 
         // NOTE: only include post_meta relation when requested in 'columns' or by default

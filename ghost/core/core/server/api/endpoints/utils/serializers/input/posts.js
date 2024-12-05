@@ -19,10 +19,10 @@ const messages = {
 
 /**
  * Selects all allowed columns for the given frame.
- * 
+ *
  * NOTE: This doesn't stop them from being FETCHED, just returned in the response. This causes
  *   the output serializer to remove them from the data object before returning.
- * 
+ *
  * NOTE: This is only intended for the Content API. We need these fields within Admin API responses.
  *
  * @param {Object} frame - The frame object.
@@ -37,10 +37,10 @@ function removeSourceFormats(frame) {
 
 /**
  * Selects all allowed columns for the given frame.
- * 
+ *
  * This removes the lexical and mobiledoc columns from the query. This is a performance improvement as we never intend
  *  to expose those columns in the content API and they are very large datasets to be passing around and de/serializing.
- * 
+ *
  * NOTE: This is only intended for the Content API. We need these fields within Admin API responses.
  *
  * @param {Object} frame - The frame object.
@@ -88,7 +88,7 @@ function defaultRelations(frame) {
         return false;
     }
 
-    frame.options.withRelated = ['tags', 'authors', 'authors.roles', 'email', 'tiers', 'newsletter', 'count.clicks'];
+    frame.options.withRelated = ['tags', 'authors', 'infras', 'authors.roles', 'email', 'tiers', 'newsletter', 'count.clicks'];
 }
 
 function setDefaultOrder(frame) {

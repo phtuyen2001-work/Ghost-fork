@@ -3,6 +3,7 @@ const models = require('../../models');
 const getPostServiceInstance = require('../../services/posts/posts-service');
 const allowedIncludes = [
     'tags',
+    'infras',
     'authors',
     'authors.roles',
     'email',

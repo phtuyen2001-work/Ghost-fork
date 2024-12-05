@@ -52,15 +52,38 @@ const validateSingleContentSource = async function (frame) {
     }
 };
 
+const saveInfrasProp = (posts) => {
+    const infras = [];
+    if (posts) {
+        posts.forEach((p) => {
+            infras.push(p.infras);
+        });
+    }
+    return infras;
+};
+
+// THIS WILL MUTATE DIRECTLY ON THE OBJECT/ARRAY
+const injectInfrasProp = (posts, infras) => {
+    for (let i = 0; i < posts.length; i++) {
+        posts[i].infras = infras[i];
+    }
+};
+
+// the validation removes infras prop
+// so need to manually inject it
 module.exports = {
     async add(apiConfig, frame) {
+        const savedInfras = saveInfrasProp(frame.data.posts);
         await jsonSchema.validate(...arguments);
         await validateVisibility(frame);
         await validateSingleContentSource(frame);
+        injectInfrasProp(frame.data.posts, savedInfras);
     },
     async edit(apiConfig, frame) {
+        const savedInfras = saveInfrasProp(frame.data.posts);
         await jsonSchema.validate(...arguments);
         await validateVisibility(frame);
         await validateSingleContentSource(frame);
+        injectInfrasProp(frame.data.posts, savedInfras);
     }
 };

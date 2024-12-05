@@ -308,6 +308,15 @@ module.exports = {
             ['post_id','tag_id']
         ]
     },
+    posts_infras: {
+        id: {type: 'string', maxlength: 24, nullable: false, primary: true},
+        post_id: {type: 'string', maxlength: 24, nullable: false, references: 'posts.id'},
+        infra_id: {type: 'string', maxlength: 24, nullable: false, references: 'infras.id'},
+        sort_order: {type: 'integer', nullable: false, unsigned: true, defaultTo: 0},
+        '@@INDEXES@@': [
+            ['post_id','infra_id']
+        ]
+    },
     invites: {
         id: {type: 'string', maxlength: 24, nullable: false, primary: true},
         role_id: {type: 'string', maxlength: 24, nullable: false},
