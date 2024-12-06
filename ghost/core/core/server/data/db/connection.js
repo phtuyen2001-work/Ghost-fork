@@ -62,7 +62,10 @@ function configure(dbConfig) {
     return dbConfig;
 }
 
+// connect to mysql database
 if (!knexInstance && config.get('database') && config.get('database').client) {
+    // config does not specify the port
+    // so it assumes the value of port is 3306?
     knexInstance = knex(configure(config.get('database')));
     if (config.get('telemetry:connectionPool')) {
         const instrumentation = new ConnectionPoolInstrumentation({knex: knexInstance, logging, metrics, config});
