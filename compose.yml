@@ -20,7 +20,7 @@ services:
       test: "mysql -uroot -proot ghost -e 'select 1'"
       interval: 1s
       retries: 120
-  # mysql2:
+  # mysql-second:
   #   image: mysql:8.0.35
   #   container_name: ghost-mysql-2
   #   # We'll need to look into how we can further fine tune the memory usage/performance here
@@ -34,11 +34,37 @@ services:
   #   volumes:
   #     # Turns out you can drop .sql or .sql.gz files in here, cool!
   #     - ./.docker/mysql-preload:/docker-entrypoint-initdb.d
-  #     - mysql-data-2:/var/lib/mysql
+  #     - mysql-second-data:/var/lib/mysql
   #   healthcheck:
   #     test: "mysql -uroot -proot ghost -e 'select 1'"
   #     interval: 1s
   #     retries: 120
+  # ghost-build-dev:
+  #   image: ghost-build:1.0
+  #   container_name: ghost-build-dev
+  #   ports:
+  #     - "8080:2368"
+  #   restart: always
+  #   environment:
+  #     # see https://ghost.org/docs/config/#configuration-options
+  #     database__client: mysql
+  #     database__connection__host: mysql
+  #     database__connection__port: 3306
+  #     database__connection__user: root
+  #     database__connection__password: root
+  #     database__connection__database: ghost
+  #     # this url value is just an example, and is likely wrong for your environment!
+  #     url: http://localhost:8080
+  #     # contrary to the default mentioned in the linked documentation, this image defaults to NODE_ENV=production (so development mode needs to be explicitly specified if desired)
+  #     #NODE_ENV: development
+  #   volumes:
+  #     - ghost-build-dev:/var/lib/ghost/content
+  #   ## This ensures your Ghost blog waits for the database conatiner to run
+  #   depends_on:
+  #     - mysql
+  #   build:
+  #     context: .
+  #     dockerfile: ./Dockerfile
   redis:
     image: redis:7.0
     container_name: ghost-redis
@@ -76,4 +102,5 @@ services:
       - "9091:9091"
 volumes:
   mysql-data:
-  # mysql-data-2:
+  # ghost-build-dev:
+  # mysql-second-data:
