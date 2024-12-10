@@ -27,6 +27,7 @@ export default class Main extends Component.extend(ShortcutsMixin) {
     @service settings;
     @service explore;
     @service notifications;
+    @service admins;
 
     @inject config;
 

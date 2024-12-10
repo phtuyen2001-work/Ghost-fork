@@ -51,6 +51,33 @@
                     {{/if}}
                 </ul>
                 <ul class="gh-nav-list gh-nav-manage">
+                    {{#if this.admins.isAdmin}}
+                    <li class="gh-nav-list-new relative">
+                        <GhLinkToCustomViewsIndex @route="posts-admin" @query={{reset-query-params "posts-admin"}} data-test-nav="posts-admin">{{svg-jar "posts"}}Admin Posts</GhLinkToCustomViewsIndex>
+                        <LinkTo @route="lexical-editor.new" @model="post" class="gh-secondary-action gh-nav-new-post" @alt="New post" title="New post" data-test-nav="new-story"><span>{{svg-jar "plus"}}</span></LinkTo>
+                        {{#if this.customViews.forPosts}}
+                            <button type="button" class="gh-nav-button-expand {{if this.navigation.settings.expanded.posts "expanded"}}" {{on "click" (fn this.navigation.toggleExpansion "posts")}} aria-label="{{if this.navigation.settings.expanded.posts "Collapse custom post types" "Expand custom post types"}}">
+                                {{svg-jar (if this.navigation.settings.expanded.posts "arrow-down-stroke" "arrow-right-stroke")}}
+                            </button>
+                            {{#liquid-if this.navigation.settings.expanded.posts}}
+                                <ul class="gh-nav-view-list">
+                                    {{#each this.customViews.forPosts as |view|}}
+                                        <li>
+                                            <LinkTo @route="posts-admin" @query={{reset-query-params "posts-admin" view.filter}} data-test-nav-custom="{{view.route}}-{{view.name}}" title="{{view.name}}">
+                                                <span class="gh-nav-viewname">{{view.name}}</span>
+                                                <span class="flex items-center svg-{{view.color}}">
+                                                    {{#unless view.icon}}
+                                                        <span class="absolute circle"></span>
+                                                    {{/unless}}
+                                                </span>
+                                            </LinkTo>
+                                        </li>
+                                    {{/each}}
+                                </ul>
+                            {{/liquid-if}}
+                        {{/if}}
+                    </li>
+                    {{/if}}
                     <li class="gh-nav-list-new relative">
                         <GhLinkToCustomViewsIndex @route="posts" @query={{reset-query-params "posts"}} data-test-nav="posts">{{svg-jar "posts"}}Posts</GhLinkToCustomViewsIndex>
                         <LinkTo @route="lexical-editor.new" @model="post" class="gh-secondary-action gh-nav-new-post" @alt="New post" title="New post" data-test-nav="new-story"><span>{{svg-jar "plus"}}</span></LinkTo>

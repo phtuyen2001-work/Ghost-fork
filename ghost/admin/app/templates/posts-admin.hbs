@@ -1,0 +1,34 @@
+<section class="gh-canvas gh-canvas-sticky">
+    <GhCanvasHeader class="gh-canvas-header sticky break tablet post-header">
+        <GhCustomViewTitle @title={{if this.session.user.isContributor (concat this.config.blogTitle "posts") "Admin Posts"}} @query={{reset-query-params "posts-admin"}} />
+
+        <section class="view-actions">
+            <PostsList::ContentFilter
+                @currentUser={{this.session.user}}
+                @selectedType={{this.selectedType}}
+                @availableTypes={{this.availableTypes}}
+                @onTypeChange={{this.changeType}}
+                @selectedVisibility={{this.selectedVisibility}}
+                @availableVisibilities={{this.availableVisibilities}}
+                @onVisibilityChange={{this.changeVisibility}}
+
+                @availableAuthors={{this.availableAdmins}}
+                @selectedAuthor={{this.selectedAuthor}}
+                @onAuthorChange={{this.changeAuthor}}
+
+                @selectedTag={{this.selectedTag}}
+                @availableTags={{this.availableTags}}
+                @onTagChange={{this.changeTag}}
+                @selectedOrder={{this.selectedOrder}}
+                @availableOrders={{this.availableOrders}}
+                @onOrderChange={{this.changeOrder}}
+            />
+
+            <div class="view-actions-top-row">
+                <LinkTo @route="lexical-editor.new" @model="post" class="gh-btn gh-btn-primary" data-test-new-post-button={{true}}><span>New post</span></LinkTo>
+            </div>
+        </section>
+    </GhCanvasHeader>
+
+    {{outlet}}
+</section>
