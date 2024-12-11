@@ -120,6 +120,24 @@ module.exports = function (Bookshelf) {
                 });
             }
 
+            // if (options.whereIn) {
+            //     itemCollection.query((qb) => {
+            //         qb.whereIn(...options.whereIn);
+            //     });
+            // }
+            // if (options.innerJoin) {
+            //     itemCollection.query((qb) => {
+            //         qb.innerJoin(...options.innerJoin);
+            //     });
+            // }
+
+            // https://knexjs.org/guide/query-builder.html
+            if (options.query) {
+                Object.entries(options.query).forEach(([key, q]) => {
+                    itemCollection.query(key, ...q);
+                });
+            }
+
             if (Array.isArray(options.cte)) {
                 options.cte.forEach((cte) => {
                     itemCollection.query((qb) => {

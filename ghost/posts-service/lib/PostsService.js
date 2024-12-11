@@ -44,6 +44,18 @@ class PostsService {
      */
     async browsePosts(options) {
         let posts;
+
+        // Extract the author_ids part using match
+        const authorIdsMatch = options.filter.match(/author_ids:[^+)]*/);
+        const authorIds = authorIdsMatch ? authorIdsMatch[0].replace('author_ids:', '').split(',') : null;
+        if (authorIds) {
+            options.query = {};
+            options.query.innerJoin = ['posts_authors', 'posts_authors.post_id', 'posts.id'];
+            options.query.whereIn = ['posts_authors.author_id', authorIds];
+        }
+        // Remove the author_ids part from the input string
+        options.filter = options.filter.replace(/author_ids:[^+)]*(\+)?/, '');
+
         if (options.collection) {
             let collection = await this.collectionsService.getById(options.collection, {transaction: options.transacting});
 

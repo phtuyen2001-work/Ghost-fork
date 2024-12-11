@@ -9,6 +9,7 @@ export default class PostsAdminRoute extends AuthenticatedRoute {
     @service infinity;
     @service router;
     @service feature;
+    @service admins;
 
     queryParams = {
         type: {refreshModel: true},
@@ -45,7 +46,11 @@ export default class PostsAdminRoute extends AuthenticatedRoute {
 
     model(params) {
         const user = this.session.user;
-        let filterParams = {tag: params.tag, visibility: params.visibility};
+        let filterParams = {
+            tag: params.tag,
+            visibility: params.visibility,
+            author_ids: this.admins.adminListIds
+        };
         let paginationParams = {
             perPageParam: 'limit',
             totalPagesParam: 'meta.pagination.pages'
@@ -80,7 +85,6 @@ export default class PostsAdminRoute extends AuthenticatedRoute {
         }
         if (filterStatuses.includes('draft')) {
             let draftInfinityModelParams = {...queryParams, order: params.order || 'updated_at desc', filter: this._filterString({...filterParams, status: 'draft'})};
-            console.log(draftInfinityModelParams)
             models.draftInfinityModel = this.infinity.model(this.modelName, assign({perPage, startingPage: 1}, paginationParams, draftInfinityModelParams));
         }
         if (filterStatuses.includes('published') || filterStatuses.includes('sent')) {
@@ -134,22 +138,22 @@ export default class PostsAdminRoute extends AuthenticatedRoute {
         }
     }
 
-    // @action
-    // queryParamsDidChange() {
-    //     // scroll back to the top
-    //     let contentList = document.querySelector('.content-list');
-    //     if (contentList) {
-    //         contentList.scrollTop = 0;
-    //     }
+    @action
+    queryParamsDidChange() {
+        // scroll back to the top
+        let contentList = document.querySelector('.content-list');
+        if (contentList) {
+            contentList.scrollTop = 0;
+        }
 
-    //     super.actions.queryParamsDidChange.call(this, ...arguments);
-    // }
+        super.actions.queryParamsDidChange.call(this, ...arguments);
+    }
 
-    // buildRouteInfoMetadata() {
-    //     return {
-    //         titleToken: 'Posts'
-    //     };
-    // }
+    buildRouteInfoMetadata() {
+        return {
+            titleToken: 'Admin Posts'
+        };
+    }
 
     /**
      * Returns an object containing the status filter based on the given type.

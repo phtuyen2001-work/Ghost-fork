@@ -5,14 +5,15 @@
         "host": "0.0.0.0"
     },
     "mail": {
-        "from": "test@example.com",
         "transport": "SMTP",
         "options": {
-            "host": "127.0.0.1",
-            "port": 1025,
+            "service": "Mailgun",
+            "host": "smtp.mailgun.org",
+            "port": 587,
+            "secure": false,
             "auth": {
-                "user": "user",
-                "pass": "unsecure"
+                "user": "postmaster@sandboxa4eede4d6bee4564b683d50b60b8f17c.mailgun.org",
+                "pass": "8e262805110998275790e47667ec6c01-da554c25-bccacd16"
             }
         }
     },

@@ -1,6 +1,6 @@
 <section class="gh-canvas gh-canvas-sticky">
     <GhCanvasHeader class="gh-canvas-header sticky break tablet post-header">
-        <GhCustomViewTitle @title={{if this.session.user.isContributor (concat this.config.blogTitle "posts") "Admin Posts"}} @query={{reset-query-params "posts-admin"}} />
+        <GhCustomViewTitle @title={{if this.session.user.isContributor (concat this.config.blogTitle "posts-admin") "Admin Posts"}} @query={{reset-query-params "posts-admin"}} />
 
         <section class="view-actions">
             <PostsList::ContentFilter
@@ -29,6 +29,51 @@
             </div>
         </section>
     </GhCanvasHeader>
+
+    <section class="view-container content-list">
+        <PostsList::List
+            @model={{@model}}
+            @list={{this.selectionList}}
+        >
+            <li class="no-posts-box" data-test-no-posts-box>
+                <div class="no-posts">
+                    {{#if this.showingAll}}
+                        {{svg-jar "posts-placeholder" class="gh-posts-placeholder"}}
+                        <h4>Start creating content.</h4>
+                        <LinkTo @route="lexical-editor.new" @model="post" class="gh-btn gh-btn-green" data-test-link="write-a-new-post">
+                            <span>Write a new post</span>
+                        </LinkTo>
+                    {{else}}
+                        <h4>No posts match the current filter</h4>
+                        <LinkTo @route="posts-admin" @query={{hash type=null author=null tag=null visibility=null}} class="gh-btn" data-test-link="show-all">
+                            <span>Show all admin posts</span>
+                        </LinkTo>
+                    {{/if}}
+                </div>
+            </li>
+        </PostsList::List>
+
+    {{!-- only show one infinity loader wheel at a time - always order as scheduled, draft, remainder --}}
+    {{#if @model.scheduledInfinityModel}}
+        <GhInfinityLoader
+            @infinityModel={{@model.scheduledInfinityModel}}
+            @scrollable=".gh-main"
+            @triggerOffset={{1000}} />
+    {{/if}}
+    {{#if (and @model.draftInfinityModel (or (not @model.scheduledInfinityModel) (and @model.scheduledInfinityModel @model.scheduledInfinityModel.reachedInfinity)))}}
+        <GhInfinityLoader
+            @infinityModel={{@model.draftInfinityModel}}
+            @scrollable=".gh-main"
+            @triggerOffset={{1000}} />
+    {{/if}}
+    {{#if (and @model.publishedAndSentInfinityModel (and (or (not @model.scheduledInfinityModel) @model.scheduledInfinityModel.reachedInfinity) (or (not @model.draftInfinityModel) @model.draftInfinityModel.reachedInfinity)))}}
+        <GhInfinityLoader
+            @infinityModel={{@model.publishedAndSentInfinityModel}}
+            @scrollable=".gh-main"
+            @triggerOffset={{1000}} />
+    {{/if}}
+
+    </section>
 
     {{outlet}}
 </section>

@@ -1,15 +1,11 @@
 import PostsController from './posts';
 import {action} from '@ember/object';
 import {inject as service} from '@ember/service';
-import {tracked} from '@glimmer/tracking';
 
 export default class PostsAdminController extends PostsController {
     @service admins;
 
     // default values for these are set in constructor and defined in `helpers/reset-query-params`
-    queryParams = [...this.queryParams, 'admin'];
-
-    @tracked admin = true;
 
     constructor() {
         super(...arguments);
