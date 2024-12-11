@@ -38,25 +38,19 @@ Infra = ghostBookshelf.Model.extend({
     }
 }, {
 
-    // countRelations() {
-    //     return {
-    //         posts(modelOrCollection, options) {
-    //             console.log('countRelations in infra')
-    //             modelOrCollection.query('columns', 'infras.*', (qb) => {
-    //                 qb.count('posts.id')
-    //                     .from('posts')
-    //                     .join('posts_infras', 'posts.id', 'posts_infras.post_id')
-    //                     .whereRaw('posts_infras.infra_id = infras.id')
-    //                     .as('count__posts');
-    //                 // if (options.context && options.context.public) {
-    //                 //     // @TODO use the filter behavior for posts
-    //                 //     qb.andWhere('posts.type', '=', 'post');
-    //                 //     qb.andWhere('posts.status', '=', 'published');
-    //                 // }
-    //             });
-    //         }
-    //     };
-    // },
+    countRelations() {
+        return {
+            posts(modelOrCollection, options) {
+                modelOrCollection.query('columns', 'infras.*', (qb) => {
+                    qb.count('posts.id')
+                        .from('posts')
+                        .join('posts_infras', 'posts.id', 'posts_infras.post_id')
+                        .whereRaw('posts_infras.infra_id = infras.id')
+                        .as('count__posts');
+                });
+            }
+        };
+    }
 });
 
 Infras = ghostBookshelf.Collection.extend({
