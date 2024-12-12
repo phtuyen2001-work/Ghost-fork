@@ -38,6 +38,9 @@ export const DEFAULT_QUERY_PARAMS = {
 // it easier to provide a "resetting" link, especially when used with custom views
 
 export function resetQueryParams(routeName, newParams) {
+    if (routeName === 'posts-admin') {
+        return Object.assign({}, DEFAULT_QUERY_PARAMS.posts, newParams);
+    }
     return Object.assign({}, DEFAULT_QUERY_PARAMS[routeName], newParams);
 }
 

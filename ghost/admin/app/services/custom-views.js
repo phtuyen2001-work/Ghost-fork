@@ -126,6 +126,11 @@ export default class CustomViewsService extends Service {
             viewList.push(...DEFAULT_VIEWS);
         }
 
+        // console.log(viewList)
+        if (this.router.currentRouteName === 'posts-admin') {
+            viewList.forEach(v => v.set('route', 'posts-admin'));
+        }
+
         viewList.push(...views.map((view) => {
             return CustomView.create(view);
         }));
@@ -185,7 +190,7 @@ export default class CustomViewsService extends Service {
     }
 
     get forPosts() {
-        return this.viewList.filter(view => view.route === 'posts');
+        return this.viewList.filter(view => view.route === 'posts' || view.route === 'posts-admin');
     }
 
     get forPages() {
