@@ -13,7 +13,7 @@ export default class PostsAdminController extends PostsController {
 
     get availableAdmins() {
         const users = this._availableAuthors.toArray();
-        const filtered = users.filter(u => this.admins.adminListIds.includes(u.get('id')));
+        const filtered = users.filter(u => this.admins.adminIdList.includes(u.get('id')));
 
         filtered.unshift({name: 'All authors', slug: null});
 

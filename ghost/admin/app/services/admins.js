@@ -4,7 +4,7 @@ export default class AdminsService extends Service {
     @service store;
     @service session;
 
-    _adminListIds = [
+    _adminIdList = [
         '1',
         '6757bdd2b02e995d6b6a2bc5',
         '6757bdd2b02e995d6b6a2bc6',
@@ -14,10 +14,10 @@ export default class AdminsService extends Service {
 
     constructor() {
         super(...arguments);
-        this.isAdmin = this._adminListIds.includes(this.session.user.get('id'));
+        this.isAdmin = this._adminIdList.includes(this.session.user.get('id'));
     }
 
-    get adminListIds() {
-        return this._adminListIds;
+    get adminIdList() {
+        return this._adminIdList;
     }
 }

@@ -21,7 +21,7 @@ export default class PostsAdminRoute extends AuthenticatedRoute {
 
     modelName = 'post';
     perPage = 30;
-    // adminListIds = [
+    // adminIdList = [
     //     '6757bdd2b02e995d6b6a2bc5',
     //     '6757bdd2b02e995d6b6a2bc6',
     //     '6757bdd2b02e995d6b6a2bc8'
@@ -49,7 +49,8 @@ export default class PostsAdminRoute extends AuthenticatedRoute {
         let filterParams = {
             tag: params.tag,
             visibility: params.visibility,
-            author_ids: this.admins.adminListIds
+            // author_ids: this.admins.adminIdList
+            author_id: user.get('id')
         };
         let paginationParams = {
             perPageParam: 'limit',
@@ -111,7 +112,7 @@ export default class PostsAdminRoute extends AuthenticatedRoute {
         }
 
         // if (!controller._hasLoadedAdmins) {
-        //     this.store.query('user', {ids: this.adminListIds}).then((data) => {
+        //     this.store.query('user', {ids: this.adminIdList}).then((data) => {
         //         console.log(data)
         //         controller._hasLoadedAdmins = true;
         //     });
