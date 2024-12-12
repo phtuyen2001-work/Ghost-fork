@@ -157,6 +157,9 @@ module.exports = function (Bookshelf) {
                 options.useBasicCount = unfilteredOptions.useBasicCount;
             }
 
+            // https://bookshelfjs.org/api.html#Model-instance-fetchPage
+            // this fetchPage is a modified version
+            // so refer this at plugin @tryghost/bookshelf-pagination
             const response = await itemCollection.fetchPage(options);
             // Attributes are being filtered here, so they are not leaked into calling layer
             // where models are serialized to json and do not do more filtering.

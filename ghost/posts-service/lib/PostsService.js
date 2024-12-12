@@ -44,17 +44,30 @@ class PostsService {
      */
     async browsePosts(options) {
         let posts;
+        let _authorIds = [
+            '1',
+            '6757bdd2b02e995d6b6a2bc5',
+            '6757bdd2b02e995d6b6a2bc6',
+            '6757bdd2b02e995d6b6a2bc8'
+        ];
 
-        // Extract the author_ids part using match
-        const authorIdsMatch = options.filter.match(/author_ids:[^+)]*/);
-        const authorIds = authorIdsMatch ? authorIdsMatch[0].replace('author_ids:', '').split(',') : null;
-        if (authorIds) {
+        // Extract the author_id part using match
+        const authorIdMatch = options.filter.match(/author_id:[^+)]*/);
+        const authorId = authorIdMatch ? authorIdMatch[0].replace('author_id:', '') : null;
+        if (authorId && _authorIds.includes(authorId)) {
             options.query = {};
-            options.query.innerJoin = ['posts_authors', 'posts_authors.post_id', 'posts.id'];
-            options.query.whereIn = ['posts_authors.author_id', authorIds];
+            options.query.leftOuterJoin = ['posts_authors', 'posts_authors.post_id', 'posts.id'];
+            options.query.whereIn = ['posts_authors.author_id', _authorIds];
+        } else if (options.withRelated && options.withRelated.includes('authors')) {
+            if (options.selectRaw && options.selectRaw.match(/\bid\b/)) {
+                options.selectRaw = options.selectRaw.replace(/\bid\b/, 'posts.id');
+            }
+            options.query = {};
+            options.query.leftOuterJoin = ['posts_authors', 'posts_authors.post_id', 'posts.id'];
+            options.query.whereNotIn = ['posts_authors.author_id', _authorIds];
         }
-        // Remove the author_ids part from the input string
-        options.filter = options.filter.replace(/author_ids:[^+)]*(\+)?/, '');
+        // Remove the author_id part from the input string
+        options.filter = options.filter.replace(/author_id:[^+)]*(\+)?/, '');
 
         if (options.collection) {
             let collection = await this.collectionsService.getById(options.collection, {transaction: options.transacting});
