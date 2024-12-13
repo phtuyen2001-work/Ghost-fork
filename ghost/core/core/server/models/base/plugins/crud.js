@@ -133,8 +133,10 @@ module.exports = function (Bookshelf) {
 
             // https://knexjs.org/guide/query-builder.html
             if (options.query) {
-                Object.entries(options.query).forEach(([key, q]) => {
-                    itemCollection.query(key, ...q);
+                Object.entries(options.query).forEach(([, qName]) => {
+                    Object.entries(qName).forEach(([key, q]) => {
+                        itemCollection.query(key, ...q);
+                    });
                 });
             }
 

@@ -6,9 +6,9 @@ export default class AdminsService extends Service {
 
     _adminIdList = [
         '1',
-        '6757bdd2b02e995d6b6a2bc5',
-        '6757bdd2b02e995d6b6a2bc6',
-        '6757bdd2b02e995d6b6a2bc8'
+        '675bef0e081313d5a9dec960',
+        '675bef0e081313d5a9dec961',
+        '675bef0e081313d5a9dec963'
     ];
     isAdmin = false;
 
