@@ -84,8 +84,6 @@ class PostsService {
         // remove the "()+" part
         options.filter = options.filter.replace('()+', '');
 
-        console.log(options)
-
         if (options.collection) {
             let collection = await this.collectionsService.getById(options.collection, {transaction: options.transacting});
 
