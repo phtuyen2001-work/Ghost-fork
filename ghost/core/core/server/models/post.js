@@ -302,6 +302,10 @@ Post = ghostBookshelf.Model.extend({
             replacement: 'authors.slug',
             expansion: 'posts_authors.sort_order:0+authors.visibility:public'
         }, {
+            key: 'primary_infra',
+            replacement: 'infras.slug',
+            expansion: 'posts_infras.sort_order:0'
+        }, {
             key: 'authors',
             replacement: 'authors.slug'
         }, {
@@ -313,6 +317,12 @@ Post = ghostBookshelf.Model.extend({
         }, {
             key: 'tags',
             replacement: 'tags.slug'
+        }, {
+            key: 'infras',
+            replacement: 'infras.slug'
+        }, {
+            key: 'infra',
+            replacement: 'infras.slug'
         }];
 
         const postMetaKeyExpansions = postsMetaKeys.map((pmk) => {

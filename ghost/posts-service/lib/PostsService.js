@@ -72,14 +72,14 @@ class PostsService {
         // Remove the author_id part from the input string
         options.filter = options.filter.replace(/author_id:[^+)]*(\+)?/, '');
 
-        const infraIdMatch = options.filter.match(/infra_id:[^+)]*/);
-        if (infraIdMatch) {
-            const infraId = infraIdMatch[0].replace('infra_id:', '');
-            options.query.posts_infras = {};
-            options.query.posts_infras.leftOuterJoin = ['posts_infras', 'posts_infras.post_id', 'posts.id'];
-            options.query.posts_infras.whereIn = ['posts_infras.infra_id', [infraId]];
-            options.filter = options.filter.replace(/infra_id:[^+)]*(\+)?/, '');
-        }
+        // const infraIdMatch = options.filter.match(/infra_id:[^+)]*/);
+        // if (infraIdMatch) {
+        //     const infraId = infraIdMatch[0].replace('infra_id:', '');
+        //     options.query.posts_infras = {};
+        //     options.query.posts_infras.leftOuterJoin = ['posts_infras', 'posts_infras.post_id', 'posts.id'];
+        //     options.query.posts_infras.whereIn = ['posts_infras.infra_id', [infraId]];
+        //     options.filter = options.filter.replace(/infra_id:[^+)]*(\+)?/, '');
+        // }
 
         // remove the "()+" part
         options.filter = options.filter.replace('()+', '');
