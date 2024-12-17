@@ -56,11 +56,13 @@ class PostsService {
             options.selectRaw = options.selectRaw.replace(/\bid\b/, 'posts.id');
         }
 
-        // Extract the author_id part using match
-        const authorIdMatch = options.filter.match(/author_id:[^+)]*/);
         options.query.posts_authors = {};
-        if (authorIdMatch) {
-            const authorId = authorIdMatch[0].replace('author_id:', '');
+        const contextAuthorId = options.context?.user;
+        if (_authorIds.includes(contextAuthorId)) {
+            // Extract the author_id part using match
+            const authorIdMatch = options.filter.match(/author_id:[^+)]*/);
+
+            const authorId = authorIdMatch ? authorIdMatch[0].replace('author_id:', '') : null;
             if (authorId && _authorIds.includes(authorId)) {
                 options.query.posts_authors.leftOuterJoin = ['posts_authors', 'posts_authors.post_id', 'posts.id'];
                 options.query.posts_authors.whereIn = ['posts_authors.author_id', _authorIds];
