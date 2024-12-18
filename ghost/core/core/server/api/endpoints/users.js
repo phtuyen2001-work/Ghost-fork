@@ -16,6 +16,13 @@ const messages = {
     userNotFound: 'User not found.'
 };
 
+const ADMIN_ID_LIST = process.env.ADMIN_ID_LIST ? process.env.ADMIN_ID_LIST.split(',') : [
+    '1',
+    '675bef0e081313d5a9dec960',
+    '675bef0e081313d5a9dec961',
+    '675bef0e081313d5a9dec963'
+];
+
 function permissionOnlySelf(frame) {
     const targetId = getTargetId(frame);
     const userId = frame.user.id;
@@ -285,6 +292,16 @@ const controller = {
             return fetchOrCreatePersonalToken(targetId).then((model) => {
                 return models.ApiKey.refreshSecret(model.toJSON(), Object.assign({}, {id: model.id}));
             });
+        }
+    },
+
+    getAdminIdList: {
+        headers: {
+            cacheInvalidate: false
+        },
+        permissions: false,
+        query() {
+            return ADMIN_ID_LIST;
         }
     }
 };

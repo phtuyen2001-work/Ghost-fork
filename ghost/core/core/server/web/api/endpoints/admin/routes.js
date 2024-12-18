@@ -19,6 +19,7 @@ module.exports = function apiRoutes() {
     router.use(apiMw.cors);
 
     // ## Public
+    router.get('/admin_ids', mw.publicAdminApi, http(api.users.getAdminIdList));
     router.get('/site', mw.publicAdminApi, http(api.site.read));
     router.post('/mail_events', mw.publicAdminApi, http(api.mailEvents.add));
 

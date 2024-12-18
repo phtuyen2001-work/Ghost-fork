@@ -49,6 +49,7 @@ export default Route.extend(ShortcutsRoute, {
     ui: service(),
     whatsNew: service(),
     billing: service(),
+    admins: service(),
 
     shortcuts,
 
@@ -68,6 +69,7 @@ export default Route.extend(ShortcutsRoute, {
 
     async beforeModel() {
         await this.session.setup();
+        await this.setAdminIds();
         return this.prepareApp();
     },
 
@@ -174,6 +176,12 @@ export default Route.extend(ShortcutsRoute, {
 
     willDestroy() {
         this.ui.cleanupBodyDragHandlers();
+    },
+
+    async setAdminIds() {
+        const url = this.ghostPaths.url.api('admin_ids');
+        const response = await this.ajax.request(url);
+        this.admins.adminIdList = response.users[0];
     },
 
     async prepareApp() {
