@@ -88,6 +88,7 @@ const controller = {
         options: [
             'include',
             'filter',
+            'dashboard',
             'fields',
             'formats',
             'limit',

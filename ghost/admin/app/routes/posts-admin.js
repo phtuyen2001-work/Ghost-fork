@@ -46,12 +46,7 @@ export default class PostsAdminRoute extends AuthenticatedRoute {
 
     model(params) {
         const user = this.session.user;
-        let filterParams = {
-            tag: params.tag,
-            visibility: params.visibility,
-            // author_ids: this.admins.adminIdList
-            author_id: user.get('id')
-        };
+        let filterParams = {tag: params.tag, visibility: params.visibility};
         let paginationParams = {
             perPageParam: 'limit',
             totalPagesParam: 'meta.pagination.pages'
@@ -77,7 +72,10 @@ export default class PostsAdminRoute extends AuthenticatedRoute {
         let perPage = this.perPage;
 
         const filterStatuses = filterParams.status;
-        let queryParams = {allFilter: this._filterString({...filterParams})}; // pass along the parent filter so it's easier to apply the params filter to each infinity model
+        let queryParams = {
+            allFilter: this._filterString({...filterParams}),
+            dashboard: `user_id:${user.get('id')}`
+        }; // pass along the parent filter so it's easier to apply the params filter to each infinity model
         let models = {};
 
         if (filterStatuses.includes('scheduled')) {

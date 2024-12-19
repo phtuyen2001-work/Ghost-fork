@@ -49,6 +49,7 @@ const controller = {
         options: [
             'include',
             'filter',
+            'dashboard',
             'fields',
             'collection',
             'formats',

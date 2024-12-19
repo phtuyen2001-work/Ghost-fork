@@ -25,7 +25,7 @@ const messages = {
     collectionNotFound: 'Collection not found.'
 };
 
-const authorIdList = process.env.ADMIN_ID_LIST ? process.env.ADMIN_ID_LIST.split(',') : [
+const whiteIdList = process.env.ADMIN_ID_LIST ? process.env.ADMIN_ID_LIST.split(',') : [
     '1',
     '675bef0e081313d5a9dec960',
     '675bef0e081313d5a9dec961',
@@ -52,49 +52,41 @@ class PostsService {
     async browsePosts(options) {
         let posts;
         console.log(process.env.ADMIN_ID_LIST);
-        let _authorIds = [...authorIdList];
+        let _whiteIds = [...whiteIdList];
 
-        options.query = {};
         if (options.selectRaw && options.selectRaw.match(/\bid\b/)) {
             options.selectRaw = options.selectRaw.replace(/\bid\b/, 'posts.id');
         }
 
-        let isAdminReq = false;
-        const contextAuthorId = options.context?.user;
-        if (_authorIds.includes(contextAuthorId)) {
-            // Extract the author_id part using match
-            const authorIdMatch = options.filter.match(/author_id:[^+)]*/);
+        let isFromDashboard = 'dashboard' in options;
+        if (isFromDashboard) {
+            options.query = {};
 
-            const authorId = authorIdMatch ? authorIdMatch[0].replace('author_id:', '') : null;
-            if (authorId && _authorIds.includes(authorId)) {
-                isAdminReq = true;
-            } else {
-                isAdminReq = false;
+            let isWhiteReq = false;
+            const contextUserId = options.context?.user;
+            if (_whiteIds.includes(contextUserId)) {
+                // Extract the user_id part using match
+                const idMatch = options.dashboard.match(/user_id:[^+)]*/);
+
+                const whiteUser = idMatch ? idMatch[0].replace('user_id:', '') : null;
+                if (whiteUser && _whiteIds.includes(whiteUser)) {
+                    isWhiteReq = true;
+                } else {
+                    isWhiteReq = false;
+                }
             }
-        }
-        options.query.posts_authors = {};
-        if (isAdminReq) {
-            options.query.posts_authors.leftOuterJoin = ['posts_authors', 'posts_authors.post_id', 'posts.id'];
-            options.query.posts_authors.whereIn = ['posts_authors.author_id', _authorIds];
-        } else if (!isAdminReq && options.withRelated && options.withRelated.includes('authors')) {
-            options.query.posts_authors.leftOuterJoin = ['posts_authors', 'posts_authors.post_id', 'posts.id'];
-            options.query.posts_authors.whereNotIn = ['posts_authors.author_id', _authorIds];
-        }
-        // Remove the author_id part from the input string
-        // /(\+)?author_id:[^+)]*(\+)?/ to remove adjacent + character
-        options.filter = options.filter.replace(/author_id:[^+)]*(\+)?/, '');
 
-        // const infraIdMatch = options.filter.match(/infra_id:[^+)]*/);
-        // if (infraIdMatch) {
-        //     const infraId = infraIdMatch[0].replace('infra_id:', '');
-        //     options.query.posts_infras = {};
-        //     options.query.posts_infras.leftOuterJoin = ['posts_infras', 'posts_infras.post_id', 'posts.id'];
-        //     options.query.posts_infras.whereIn = ['posts_infras.infra_id', [infraId]];
-        //     options.filter = options.filter.replace(/infra_id:[^+)]*(\+)?/, '');
-        // }
+            options.query.posts_authors = {};
+            if (isWhiteReq) {
+                options.query.posts_authors.leftOuterJoin = ['posts_authors', 'posts_authors.post_id', 'posts.id'];
+                options.query.posts_authors.whereIn = ['posts_authors.author_id', _whiteIds];
+            } else if (!isWhiteReq && options.withRelated && options.withRelated.includes('authors')) {
+                options.query.posts_authors.leftOuterJoin = ['posts_authors', 'posts_authors.post_id', 'posts.id'];
+                options.query.posts_authors.whereNotIn = ['posts_authors.author_id', _whiteIds];
+            }
 
-        // remove the "()+" part
-        options.filter = options.filter.replace('()+', '');
+            delete options.dashboard;
+        }
 
         if (options.collection) {
             let collection = await this.collectionsService.getById(options.collection, {transaction: options.transacting});

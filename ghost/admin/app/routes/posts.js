@@ -45,14 +45,14 @@ export default class PostsRoute extends AuthenticatedRoute {
             perPageParam: 'limit',
             totalPagesParam: 'meta.pagination.pages'
         };
-        
+
         // type filters are actually mapping statuses
         assign(filterParams, this._getTypeFilters(params.type));
-        
+
         if (params.type === 'featured') {
             filterParams.featured = true;
         }
-        
+
         // authors and contributors can only view their own posts
         if (user.isAuthor) {
             filterParams.authors = user.slug;
@@ -62,11 +62,14 @@ export default class PostsRoute extends AuthenticatedRoute {
         } else if (params.author) {
             filterParams.authors = params.author;
         }
-        
+
         let perPage = this.perPage;
-        
+
         const filterStatuses = filterParams.status;
-        let queryParams = {allFilter: this._filterString({...filterParams})}; // pass along the parent filter so it's easier to apply the params filter to each infinity model
+        let queryParams = {
+            allFilter: this._filterString({...filterParams}),
+            dashboard: null
+        }; // pass along the parent filter so it's easier to apply the params filter to each infinity model
         let models = {};
 
         if (filterStatuses.includes('scheduled')) {
