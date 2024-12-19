@@ -20,6 +20,10 @@
                             in <span class="midgrey-l2 fw5">{{@post.primaryTag.name}}</span>
                         {{/if}}
 
+                        {{#if this.firstInfra}}
+                            with <span class="midgrey-l2 fw5">{{this.firstInfra.name}}</span>
+                        {{/if}}
+
                         -
                     </span>
                     {{#if (or @post.isDraft @post.isScheduled)}}
@@ -71,6 +75,10 @@
 
                         {{#if @post.primaryTag}}
                             in <span class="midgrey-l2 fw5">{{@post.primaryTag.name}}</span>
+                        {{/if}}
+
+                        {{#if this.firstInfra}}
+                            with <span class="midgrey-l2 fw5">{{this.firstInfra.name}}</span>
                         {{/if}}
                         -
                     </span>

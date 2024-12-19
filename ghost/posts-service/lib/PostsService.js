@@ -25,7 +25,12 @@ const messages = {
     collectionNotFound: 'Collection not found.'
 };
 
-const authorIdList = process.env.ADMIN_ID_LIST ? process.env.ADMIN_ID_LIST.split(',') : [];
+const authorIdList = process.env.ADMIN_ID_LIST ? process.env.ADMIN_ID_LIST.split(',') : [
+    '1',
+    '675bef0e081313d5a9dec960',
+    '675bef0e081313d5a9dec961',
+    '675bef0e081313d5a9dec963'
+];
 
 class PostsService {
     constructor({urlUtils, models, isSet, stats, emailService, postsExporter, collectionsService}) {
@@ -46,12 +51,6 @@ class PostsService {
      */
     async browsePosts(options) {
         let posts;
-        // let _authorIds = [
-        //     '1',
-        //     '675bef0e081313d5a9dec960',
-        //     '675bef0e081313d5a9dec961',
-        //     '675bef0e081313d5a9dec963'
-        // ];
         console.log(process.env.ADMIN_ID_LIST);
         let _authorIds = [...authorIdList];
 

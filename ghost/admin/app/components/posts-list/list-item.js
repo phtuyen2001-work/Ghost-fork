@@ -15,6 +15,13 @@ export default class PostsListItemClicks extends Component {
         return this.args.post;
     }
 
+    get firstInfra() {
+        if (this.post.infras && this.post.infras.length > 0) {
+            return this.post.infras.objectAt(0);
+        }
+        return null;
+    }
+
     get errorClass() {
         if (this.post.didEmailFail) {
             return 'error';
