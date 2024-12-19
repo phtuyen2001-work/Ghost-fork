@@ -59,7 +59,7 @@ class PostsService {
             options.selectRaw = options.selectRaw.replace(/\bid\b/, 'posts.id');
         }
 
-        options.query.posts_authors = {};
+        let isAdminReq = false;
         const contextAuthorId = options.context?.user;
         if (_authorIds.includes(contextAuthorId)) {
             // Extract the author_id part using match
@@ -67,14 +67,21 @@ class PostsService {
 
             const authorId = authorIdMatch ? authorIdMatch[0].replace('author_id:', '') : null;
             if (authorId && _authorIds.includes(authorId)) {
-                options.query.posts_authors.leftOuterJoin = ['posts_authors', 'posts_authors.post_id', 'posts.id'];
-                options.query.posts_authors.whereIn = ['posts_authors.author_id', _authorIds];
+                isAdminReq = true;
+            } else {
+                isAdminReq = false;
             }
-        } else if (options.withRelated && options.withRelated.includes('authors')) {
+        }
+        options.query.posts_authors = {};
+        if (isAdminReq) {
+            options.query.posts_authors.leftOuterJoin = ['posts_authors', 'posts_authors.post_id', 'posts.id'];
+            options.query.posts_authors.whereIn = ['posts_authors.author_id', _authorIds];
+        } else if (!isAdminReq && options.withRelated && options.withRelated.includes('authors')) {
             options.query.posts_authors.leftOuterJoin = ['posts_authors', 'posts_authors.post_id', 'posts.id'];
             options.query.posts_authors.whereNotIn = ['posts_authors.author_id', _authorIds];
         }
         // Remove the author_id part from the input string
+        // /(\+)?author_id:[^+)]*(\+)?/ to remove adjacent + character
         options.filter = options.filter.replace(/author_id:[^+)]*(\+)?/, '');
 
         // const infraIdMatch = options.filter.match(/infra_id:[^+)]*/);
