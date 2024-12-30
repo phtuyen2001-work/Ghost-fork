@@ -23,6 +23,10 @@ module.exports = function apiRoutes() {
     router.get('/site', mw.publicAdminApi, http(api.site.read));
     router.post('/mail_events', mw.publicAdminApi, http(api.mailEvents.add));
 
+    // Infras
+    router.get('/infras', mw.publicAdminApi, http(api.infras.browse));
+    router.get('/infras/:id', mw.publicAdminApi, http(api.infras.read));
+
     // ## Collections
     router.get('/collections', mw.authAdminApi, http(api.collections.browse));
     router.get('/collections/:id', mw.authAdminApi, http(api.collections.read));
@@ -114,10 +118,6 @@ module.exports = function apiRoutes() {
     router.post('/tags', mw.authAdminApi, http(api.tags.add));
     router.put('/tags/:id', mw.authAdminApi, http(api.tags.edit));
     router.del('/tags/:id', mw.authAdminApi, http(api.tags.destroy));
-
-    // Infras
-    router.get('/infras', mw.authAdminApi, http(api.infras.browse));
-    router.get('/infras/:id', mw.authAdminApi, http(api.infras.read));
 
     // Tiers
     router.get('/tiers', mw.authAdminApi, http(api.tiers.browse));

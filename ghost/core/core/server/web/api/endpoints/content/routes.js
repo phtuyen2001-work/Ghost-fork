@@ -33,6 +33,10 @@ module.exports = function apiRoutes() {
     router.get('/tags/:id', mw.authenticatePublic, http(api.tagsPublic.read));
     router.get('/tags/slug/:slug', mw.authenticatePublic, http(api.tagsPublic.read));
 
+    // Infras
+    router.get('/infras', mw.authenticatePublic, http(api.infras.browse));
+    router.get('/infras/:id', mw.authenticatePublic, http(api.infras.read));
+
     // ## Settings
     router.get('/settings', mw.authenticatePublic, http(api.publicSettings.browse));
 
