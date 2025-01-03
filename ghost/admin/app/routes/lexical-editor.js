@@ -20,6 +20,12 @@ export default AuthenticatedRoute.extend({
         if (transition.from?.name === 'posts.analytics' && transition.to?.name !== 'lexical-editor.new') {
             controller.fromAnalytics = true;
         }
+
+        if (transition.from) {
+            controller.goBackLocation = transition.from.name;
+        } else {
+            controller.goBackLocation = 'dashboard';
+        }
     },
 
     resetController(controller) {

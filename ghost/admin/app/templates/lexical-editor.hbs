@@ -23,9 +23,9 @@
                                     <span>Analytics</span>
                                 </LinkTo>
                             {{else}}
-                                <LinkTo @route='dashboard' class="gh-btn-editor gh-editor-back-button" data-test-link={{pluralize this.post.displayName}} data-test-breadcrumb>
+                                <LinkTo @route={{this.goBackLocation}} class="gh-btn-editor gh-editor-back-button" data-test-link={{pluralize this.post.displayName}} data-test-breadcrumb>
                                     {{svg-jar "arrow-left"}}
-                                    <span>Dashboard</span>
+                                    <span>Back</span>
                                 </LinkTo>
                             {{/if}}
                         {{/if}}
